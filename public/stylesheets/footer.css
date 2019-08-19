@@ -1,0 +1,30 @@
+footer ul{
+    list-style-type: none;
+}
+.footer-brand{
+    top: 1.5rem;
+    height: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.footer .form .btn {
+    right: 0;
+    top: 0;
+}
+.footer .form .form-control {
+    opacity: 0.8;
+}
+
+@media (min-width: 768px){
+    .footer, .footer ul{
+        flex-direction: row !important;
+        align-items: baseline !important;
+        margin-top: 0 !important;
+    }
+    .footer > ul,.footer > form {
+        width: 240px;
+    }
+    .footer-brand{
+        height: 80px;
+    }
+}

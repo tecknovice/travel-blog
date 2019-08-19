@@ -1,0 +1,34 @@
+header.position-relative.text-white
+    nav.navbar.container.navbar-expand-md.navbar-dark
+        a.navbar-brand.m-0.p-0(href="/")
+            img.w-auto.h-100(src="/images/logo.png" alt="logo")
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
+            span.navbar-toggler-icon
+        #navbarSupportedContent.collapse.navbar-collapse.justify-content-between
+            ul.navbar-nav.justify-content-between
+                li.nav-item.dropdown
+                    a#destinations.nav-link.px-0(href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                        .mb-0 Destinations
+                    .dropdown-menu(aria-labelledby="destinations")
+                        a.dropdown-item.pl-md-0(href="tag.html") Hanoi
+                        a.dropdown-item.pl-md-0(href="tag.html") Hue
+                        a.dropdown-item.pl-md-0(href="tag.html") Danang
+                        a.dropdown-item.pl-md-0(href="tag.html") Hoian
+                        a.dropdown-item.pl-md-0(href="tag.html") Tokyo
+                        a.dropdown-item.pl-md-0(href="tag.html") Bangkok
+                li.nav-item.dropdown
+                    a#travel-guide.nav-link.px-0(href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                        .mb-0 Travel guides
+                    .dropdown-menu(aria-labelledby="travel-guide")
+                        a.dropdown-item.pl-md-0(href="tag.html") Planning
+                        a.dropdown-item.pl-md-0(href="tag.html") Finance
+                        a.dropdown-item.pl-md-0(href="tag.html") Packing
+                        a.dropdown-item.pl-md-0(href="tag.html") Travel insurance
+            form.form.position-relative.my-2.my-md-0(method="GET" action="search.html")
+                input.form-control.bg-white.rounded-pill.pr-5(type="search" name="keyword" autocomplete="off" placeholder="Search" aria-label="Search")
+                button.btn.position-absolute.rounded-circle(type="submit")
+                    i.fa.fa-search.text-secondary
+    .header-text.container.display-4.text-center=title
+    .bg-container
+        block cover
+        .bg-cover

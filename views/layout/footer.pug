@@ -1,0 +1,35 @@
+footer.mt-5.py-5.bg-secondary.text-white.position-relative
+    a.footer-brand.position-absolute(href="/")
+        img.w-auto.h-100(src="/images/logo.png" alt="logo")
+    .footer.mt-5.container.d-flex.flex-column.justify-content-between.align-items-stretch
+        ul.p-0.d-flex.flex-column.justify-content-between
+            li.nav-item.active.dropdown
+                .text-center.text-md-left Destinations
+                ul.p-0.text-white
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Hanoi
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Hue
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Danang
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Hoian
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Tokyo
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Bangkok
+            li.nav-item.dropdown
+                .text-center.text-md-left.mt-3.mt-md-0  Travel guides
+                ul.p-0.text-white
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Planning
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Packing
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Finance
+                    li.text-center.text-md-left
+                        a.text-white(href="#") Travel insurance
+        form.form.position-relative
+            input.form-control.bg-white.rounded-pill.pr-5(type="search" name="keyword" autocomplete="off" placeholder="Search" aria-label="Search")
+            button.btn.position-absolute.rounded-circle(type="submit")
+                i.fa.fa-search.text-secondary

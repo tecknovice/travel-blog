@@ -1,8 +1,41 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+body{
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #212529;
 }
-
-a {
-  color: #00B7FF;
+i{
+    font-size: 1.5rem !important;
 }
+a{
+    color: #212529;
+}
+a:hover{
+    color: #212529;
+    text-decoration: underline !important;
+}
+.image-container .image-cover{
+    position: absolute ;
+    top: 0 ;
+    left: 0 ;
+    width: 100% ;
+    height: 100% ;
+    background-color: #343a40;
+    opacity: 0.5 ;
+}
+.image-container{
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 252px;
+}
+.image-container img.wide {
+    width: auto;
+    height: 100%;
+}
+.image-container img.tall {
+    width: 100%;
+    height: auto;
+}​

@@ -1,5 +1,247 @@
-extends layout
+extends layout/base.pug
+
+block stylesheets
+  link(rel="stylesheet" href="/stylesheets/index.css")
+
+block cover
+  img(src="https://admin.thesologuy.tk/images/1566190503470-travel.jpg" alt="cover image")
 
 block content
-  h1= title
-  p Welcome to #{title}
+  section.about-me.container.mt-5
+    .row
+      .col-md-4
+        .d-flex.flex-column
+          .image-container.rounded
+            .image-cover
+            img.rounded(src="images/avatar.jpg" alt="avatar")
+          .d-flex.justify-content-around.mt-3
+            a(href="#")
+              i.fa.fa-facebook-f
+            a(href="#")
+              i.fa.fa-instagram
+            a(href="#")
+              i.fa.fa-twitter
+            a(href="#")
+              i.fa.fa-youtube-play
+      .col-md-8.mt-4.mt-md-0
+        .d-flex.flex-column
+          h1.text-center.text-md-left
+            a(href="#") About me
+          .text-justify.overflow-hidden(style="height: 15rem;")
+            | Hi, I’m Hung, the founder of this website! Have you ever thought to your self one of the
+            | following:
+            ul(style="margin: 0;")
+              li “How do I find the money to travel? It seems too expensive for me.”
+              li “Where do I find the best travel deals?”
+              li “How do I save money on flights, accommodation, and other big expenses?”
+              li “How do I plan my trip?”
+              li “How do I stay safe and healthy?”
+              li “How do I maximize my time?”
+              li “I want to travel more but I don’t know the first step.”
+            |                         You are not alone. I am here to help you answer those
+            |                         questions and travel more with tested and proven tips and advice. This way, you can spend less
+            |                         time searching the Internet and being overwhelmed with information and more time doing the one
+            |                         thing you want to do: travel more.
+  section.stats.d-flex.align-items-center.text-white.mt-5
+    .container
+      .row
+        .col-md-4
+          .stat.d-flex.flex-column.align-items-center
+            .display-4 5
+            div destinations
+        .col-md-4.my-3.my-md-0
+          .stat.d-flex.flex-column.align-items-center
+            .display-4 150
+            div posts
+        .col-md-4
+          .stat.d-flex.flex-column.align-items-center
+            .display-4 1K+
+            div images & videos
+  section.top-posts.container.mt-5
+    h1.text-center Top posts
+    .position-relative.mt-4
+      #controls-container.controls-container
+        button.btn.bg-white.border-0.prev-button.d-flex.align-items-center.justify-content-center.rounded-circle
+          i.fa.fa-chevron-left
+        button.btn.bg-white.border-0.next-button.d-flex.align-items-center.justify-content-center.rounded-circle
+          i.fa.fa-chevron-right
+      .slider
+        div
+          .card
+            .image-container.card-img-top
+              img(src="images/attractions-akiba.jpg" alt="post cover image")
+              .image-cover
+            .card-body
+              .d-flex.align-items-center
+                i.fa.fa-tag.mr-3
+                span
+                  a(href="tag.html") Tokyo
+                  a(href="tag.html") Shopping
+              h4.my-2
+                a(href="post.html") Akiba
+              div 2016 March 14
+              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                | Akihabara (秋葉原), also called Akiba after a former local shrine, is a district in central
+                | Tokyo that is famous for its many electronics shops. In more recent years, Akihabara has
+                | gained recognition as the center of Japan's otaku (diehard fan) culture,
+        div
+          .card
+            .image-container.card-img-top
+              img(src="images/attractions-asakusa.jpg" alt="post cover image")
+              .image-cover
+            .card-body
+              .d-flex.align-items-center
+                i.fa.fa-tag.mr-3
+                span
+                  a(href="tag.html") Tokyo
+                  a(href="tag.html") Traditional
+              h4.my-2
+                a(href="post.html") Asakusa
+              div 2016 March 15
+              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                | Asakusa (浅草) is the center of Tokyo's shitamachi (literally "low city"), one of Tokyo's
+                | districts, where an atmosphere of the Tokyo of past decades survives.
+        div
+          .card
+            .image-container.card-img-top
+              img(src="images/attractions-hachiko.jpg" alt="post cover image")
+              .image-cover
+            .card-body
+              .d-flex.align-items-center
+                i.fa.fa-tag.mr-3
+                span
+                  a(href="tag.html") Tokyo
+                  a(href="tag.html") Culture
+                  a(href="tag.html") History
+              h4.my-2
+                a(href="post.html") Hachiko's Statue
+              div 2016 March 14
+              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                | Hachikō (ハチ公, November 10, 1923 – March 8, 1935) was a Japanese Akita dog remembered for
+                | his remarkable loyalty to his owner, Hidesaburō Ueno (上野 英三郎 Ueno Hidesaburō), for whom
+                | he continued to wait for over nine years following Ueno's death.
+        div
+          .card
+            .image-container.card-img-top
+              img(src="images/attractions-shibuya.jpg" alt="post cover image")
+              .image-cover
+            .card-body
+              .d-flex.align-items-center
+                i.fa.fa-tag.mr-3
+                span
+                  a(href="tag.html") Tokyo
+                  a(href="tag.html") Shopping
+                  a(href="tag.html") Nightlife
+              h4.my-2
+                a(href="post.html") Shibuya
+              div 2016 March 14
+              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                | Shibuya (渋谷) is one of the twenty-three city wards of Tokyo, but often refers to just
+                | the popular shopping and entertainment area found around Shibuya Station. In this
+                | regard, Shibuya is one of Tokyo's most colorful and busy districts, packed with
+                | shopping, dining and nightclubs serving swarms of visitors that come to the district
+                | everyday.
+        div
+          .card
+            .image-container.card-img-top
+              img(src="images/attractions-shinjuku.jpg" alt="post cover image")
+              .image-cover
+            .card-body
+              .d-flex.align-items-center
+                i.fa.fa-tag.mr-3
+                span
+                  a(href="tag.html") Tokyo
+                  a(href="tag.html") Shopping
+                  a(href="tag.html") Entertainment
+              h4.my-2
+                a(href="post.html") Shinjuku
+              div 2016 March 14
+              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                | Shinjuku (新宿) is one of the 23 city wards of Tokyo, but the name commonly refers to just
+                | the large entertainment, business and shopping area around Shinjuku Station.
+                | Shinjuku Station is the world's busiest railway station, handling more than two million
+                | passengers every day. It is served by about a dozen railway and subway lines, including
+  section.latest-posts.container.mt-5
+    h1.text-center Lastest posts
+    .row
+      .col-sm-6.col-lg-4.mt-4
+        .card
+          .image-container.card-img-top
+            img(src="images/Cherry-Blossom-2-ueno-koen.jpg" alt="post cover image")
+            .image-cover
+          .card-body
+            .d-flex.align-items-center
+              i.fa.fa-tag.mr-3
+              span
+                a(href="tag.html") Tokyo
+                a(href="tag.html") Culture
+                a(href="tag.html") Nature
+            h4.my-2
+              a(href="post.html") Cherry blossom
+            div 2016 March 14
+            p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+              | The cherry blossom is the national flower of Japan. Cherry blossom season lasts for about a
+              | month every spring and is always weather dependent early March to early April is a good rule
+              | of thumb.
+      .col-sm-6.col-lg-4.mt-4
+        .card
+          .image-container.card-img-top
+            img(src="images/Autumn-color-Aoyama-Ginkgo.jpg" alt="post cover image")
+            .image-cover
+          .card-body
+            .d-flex.align-items-center
+              i.fa.fa-tag.mr-3
+              span
+                a(href="tag.html") Tokyo
+                a(href="tag.html") Culture
+                a(href="tag.html") Nature
+            h4.my-2
+              a(href="post.html") Autumn leaf color
+            div 2016 March 14
+            p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+              | Autumn leaf color is a phenomenon that affects the normal green leaves of many deciduous
+              | trees and shrubs by which they take on, during a few weeks in the autumn season, various
+              | shades of red, yellow, purple, black, blue, orange, magenta, and brown.
+      .col-sm-6.col-lg-4.mt-4
+        .card
+          .image-container.card-img-top
+            img(src="images/acomodation_bg.jpg" alt="post cover image")
+            .image-cover
+          .card-body
+            .d-flex.align-items-center
+              i.fa.fa-tag.mr-3
+              span
+                a(href="tag.html") Tokyo
+                a(href="tag.html") Culture
+                a(href="tag.html") Acomodation
+            h4.my-2
+              a(href="post.html") Ryokan
+            div 2016 March 14
+            p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+              | A ryokan (旅館) is a type of traditional Japanese inn that typically feature tatami-matted
+              | rooms, communal baths, and other public areas where visitors may wear yukata and talk with
+              | the owner.
+    .row.mt-4
+      .col-sm-6.offset-sm-3.col-lg-4.offset-lg-4
+        button.btn.w-100.d-flex.align-items-center.justify-content-center.text-white.bg-dark.py-3(type="button")
+          | Load more
+
+block javascripts
+  script(src="/javascripts/image.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.1/min/tiny-slider.js")
+  script.
+    const slider = tns({
+      items: 1,
+      nav: false,
+      autoplay: false,
+      controlsContainer: document.getElementById('controls-container'),
+      responsive: {
+          576: {
+              gutter: 30,
+              items: 2
+          },
+          992: {
+              items: 3
+          }
+      }
+    });

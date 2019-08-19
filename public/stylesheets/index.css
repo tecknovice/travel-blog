@@ -1,0 +1,39 @@
+.stats{
+    height: 400px;
+    background-image: url("https://admin.thesologuy.tk/images/1566192120716-background.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* controls container styles */
+.controls-container{
+    position: absolute;
+    top: 200px;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1;
+}
+.controls-container .btn{
+    width: 3rem;
+    height: 3rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.5);
+}
+.controls-container .prev-button{
+    position: relative;
+    left: -0.75rem;
+}
+.controls-container .next-button{
+    position: relative;
+    right: -0.75rem;
+}
+@media (min-width: 576px){
+    .controls-container .prev-button{
+        left: -1.5rem;
+    }
+    .controls-container .next-button{
+        right: -1.5rem;
+    }
+}
