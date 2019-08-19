@@ -24,6 +24,10 @@ const postSchema = new mongoose.Schema({
         required: true,
         enum: ['published', 'draft'],
         default: 'draft'
+    },
+    views: {
+        type: Number,
+        default: 0
     }
 },
     {
@@ -32,16 +36,16 @@ const postSchema = new mongoose.Schema({
 
 // Virtual for slugId
 postSchema
-  .virtual('slugId')
-  .get(function () {
-    return this.title.toLowerCase().split(' ').filter(item => item.length > 0).join('-') + '-' + this._id;
-  });
+    .virtual('slugId')
+    .get(function () {
+        return this.title.toLowerCase().split(' ').filter(item => item.length > 0).join('-') + '-' + this._id;
+    });
 // Virtual for published time
 postSchema
-.virtual('publishedTime')
-.get(function () {
-  return moment(this.updatedAt).format('YYYY-MM-DD HH:mm:ss')
-});
+    .virtual('publishedTime')
+    .get(function () {
+        return moment(this.updatedAt).format('YYYY-MM-DD HH:mm:ss')
+    });
 const Post = mongoose.model('Post', postSchema)
 
 module.exports = Post

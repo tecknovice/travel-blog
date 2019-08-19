@@ -6,5 +6,6 @@ exports.list = async function (req, res, next) {
     const tags = await Tag.find().populate({
         path: 'image',
     }).exec()
+    debug('tags',tags)
     res.render('tag-list', { title: 'Tags list', tags })
 }

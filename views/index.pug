@@ -13,7 +13,7 @@ block content
         .d-flex.flex-column
           .image-container.rounded
             .image-cover
-            img.rounded(src="images/avatar.jpg" alt="avatar")
+            img.rounded(src="/images/avatar.jpg" alt="avatar")
           .d-flex.justify-content-around.mt-3
             a(href="#")
               i.fa.fa-facebook-f
@@ -57,110 +57,32 @@ block content
           .stat.d-flex.flex-column.align-items-center
             .display-4 1K+
             div images & videos
-  section.top-posts.container.mt-5
-    h1.text-center Top posts
-    .position-relative.mt-4
-      #controls-container.controls-container
-        button.btn.bg-white.border-0.prev-button.d-flex.align-items-center.justify-content-center.rounded-circle
-          i.fa.fa-chevron-left
-        button.btn.bg-white.border-0.next-button.d-flex.align-items-center.justify-content-center.rounded-circle
-          i.fa.fa-chevron-right
-      .slider
-        div
-          .card
-            .image-container.card-img-top
-              img(src="images/attractions-akiba.jpg" alt="post cover image")
-              .image-cover
-            .card-body
-              .d-flex.align-items-center
-                i.fa.fa-tag.mr-3
-                span
-                  a(href="tag.html") Tokyo
-                  a(href="tag.html") Shopping
-              h4.my-2
-                a(href="post.html") Akiba
-              div 2016 March 14
-              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-                | Akihabara (秋葉原), also called Akiba after a former local shrine, is a district in central
-                | Tokyo that is famous for its many electronics shops. In more recent years, Akihabara has
-                | gained recognition as the center of Japan's otaku (diehard fan) culture,
-        div
-          .card
-            .image-container.card-img-top
-              img(src="images/attractions-asakusa.jpg" alt="post cover image")
-              .image-cover
-            .card-body
-              .d-flex.align-items-center
-                i.fa.fa-tag.mr-3
-                span
-                  a(href="tag.html") Tokyo
-                  a(href="tag.html") Traditional
-              h4.my-2
-                a(href="post.html") Asakusa
-              div 2016 March 15
-              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-                | Asakusa (浅草) is the center of Tokyo's shitamachi (literally "low city"), one of Tokyo's
-                | districts, where an atmosphere of the Tokyo of past decades survives.
-        div
-          .card
-            .image-container.card-img-top
-              img(src="images/attractions-hachiko.jpg" alt="post cover image")
-              .image-cover
-            .card-body
-              .d-flex.align-items-center
-                i.fa.fa-tag.mr-3
-                span
-                  a(href="tag.html") Tokyo
-                  a(href="tag.html") Culture
-                  a(href="tag.html") History
-              h4.my-2
-                a(href="post.html") Hachiko's Statue
-              div 2016 March 14
-              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-                | Hachikō (ハチ公, November 10, 1923 – March 8, 1935) was a Japanese Akita dog remembered for
-                | his remarkable loyalty to his owner, Hidesaburō Ueno (上野 英三郎 Ueno Hidesaburō), for whom
-                | he continued to wait for over nine years following Ueno's death.
-        div
-          .card
-            .image-container.card-img-top
-              img(src="images/attractions-shibuya.jpg" alt="post cover image")
-              .image-cover
-            .card-body
-              .d-flex.align-items-center
-                i.fa.fa-tag.mr-3
-                span
-                  a(href="tag.html") Tokyo
-                  a(href="tag.html") Shopping
-                  a(href="tag.html") Nightlife
-              h4.my-2
-                a(href="post.html") Shibuya
-              div 2016 March 14
-              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-                | Shibuya (渋谷) is one of the twenty-three city wards of Tokyo, but often refers to just
-                | the popular shopping and entertainment area found around Shibuya Station. In this
-                | regard, Shibuya is one of Tokyo's most colorful and busy districts, packed with
-                | shopping, dining and nightclubs serving swarms of visitors that come to the district
-                | everyday.
-        div
-          .card
-            .image-container.card-img-top
-              img(src="images/attractions-shinjuku.jpg" alt="post cover image")
-              .image-cover
-            .card-body
-              .d-flex.align-items-center
-                i.fa.fa-tag.mr-3
-                span
-                  a(href="tag.html") Tokyo
-                  a(href="tag.html") Shopping
-                  a(href="tag.html") Entertainment
-              h4.my-2
-                a(href="post.html") Shinjuku
-              div 2016 March 14
-              p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-                | Shinjuku (新宿) is one of the 23 city wards of Tokyo, but the name commonly refers to just
-                | the large entertainment, business and shopping area around Shinjuku Station.
-                | Shinjuku Station is the world's busiest railway station, handling more than two million
-                | passengers every day. It is served by about a dozen railway and subway lines, including
+  if(topPosts)
+    section.top-posts.container.mt-5
+      h1.text-center Top posts
+      .position-relative.mt-4
+        #controls-container.controls-container
+          button.btn.bg-white.border-0.prev-button.d-flex.align-items-center.justify-content-center.rounded-circle
+            i.fa.fa-chevron-left
+          button.btn.bg-white.border-0.next-button.d-flex.align-items-center.justify-content-center.rounded-circle
+            i.fa.fa-chevron-right
+        .slider
+          each post in topPosts
+            div
+              .card
+                .image-container.card-img-top
+                  img(src=image_path+post.image.name alt="post cover image")
+                  .image-cover
+                .card-body
+                  .d-flex.align-items-center
+                    i.fa.fa-tag.mr-3
+                    span
+                      each tag in post.tags
+                        a(href=`/tag/${tag.name}`)=tag.name
+                  h4.my-2
+                    a(href=`/post/${post.slugId}`)=post.title
+                  div=post.publishedTime
+                  p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")=post.content
   section.latest-posts.container.mt-5
     h1.text-center Lastest posts
     .row
