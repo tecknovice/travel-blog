@@ -25,10 +25,19 @@ exports.homepage = async function (req, res, next) {
                     .populate('tags')
                     .exec()
                 return result
-            }
+            },
+            latestPosts: async function () {
+                const result = await Post
+                    .find({ status: 'published' })
+                    .sort({ updatedAt: 'desc' })
+                    .limit(6)
+                    .populate('image')
+                    .populate('tags')
+                    .exec()
+                return result
+            },
         })
-        debug('result',result)
-        res.render('index', { title: 'The solo guy', me: result.me, topPosts: result.topPosts })
+        res.render('index', { title: 'The solo guy', me: result.me, topPosts: result.topPosts, latestPosts: result.latestPosts })
     } catch (error) {
         next(error)
     }

@@ -31,12 +31,24 @@ const postSchema = new mongoose.Schema({
     }
 },
     {
-        timestamps: true
+        timestamps: true,
+        toObject: {
+            virtuals: true
+        },
+        toJSON: {
+            virtuals: true
+        }
     })
 
-// Virtual for slugId
+// Virtual for description
 postSchema
-    .virtual('slugId')
+    .virtual('description')
+    .get(function () {
+        return this.content.replace(/<[^>]+>/g, '')
+    });
+// Virtual for slug
+postSchema
+    .virtual('slug')
     .get(function () {
         return this.title.toLowerCase().split(' ').filter(item => item.length > 0).join('-') + '-' + this._id;
     });

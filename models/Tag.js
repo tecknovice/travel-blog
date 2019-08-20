@@ -8,12 +8,26 @@ const tagSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    image:{
+    image: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref:'Image'
+        ref: 'Image'
     }
-})
+},
+    {
+        toObject: {
+            virtuals: true
+        },
+        toJSON: {
+            virtuals: true
+        }
+    })
+// Virtual for slug
+tagSchema
+    .virtual('slug')
+    .get(function () {
+        return this.name.toLowerCase().split(' ').filter(item => item.length > 0).join('-') + '-' + this._id;
+    });
 const Tag = mongoose.model('Tag', tagSchema)
 
 module.exports = Tag

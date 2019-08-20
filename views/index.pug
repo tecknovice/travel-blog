@@ -71,86 +71,78 @@ block content
             div
               .card
                 .image-container.card-img-top
-                  img(src=image_path+post.image.name alt="post cover image")
+                  img(src=(post.image!=undefined?image_path+post.image.name:image_path+'default-post.jpg') alt="post cover image")
                   .image-cover
                 .card-body
                   .d-flex.align-items-center
                     i.fa.fa-tag.mr-3
                     span
                       each tag in post.tags
-                        a(href=`/tag/${tag.name}`)=tag.name
-                  h4.my-2
-                    a(href=`/post/${post.slugId}`)=post.title
+                        a(href=`/tag/${tag.slug}`)=tag.name
+                        |&nbsp;
+                  h4.my-2.overflow-hidden
+                    a.text-nowrap(href=`/post/${post.slug}`)=post.title
                   div=post.publishedTime
-                  p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")=post.content
-  section.latest-posts.container.mt-5
-    h1.text-center Lastest posts
-    .row
-      .col-sm-6.col-lg-4.mt-4
-        .card
-          .image-container.card-img-top
-            img(src="images/Cherry-Blossom-2-ueno-koen.jpg" alt="post cover image")
-            .image-cover
-          .card-body
-            .d-flex.align-items-center
-              i.fa.fa-tag.mr-3
-              span
-                a(href="tag.html") Tokyo
-                a(href="tag.html") Culture
-                a(href="tag.html") Nature
-            h4.my-2
-              a(href="post.html") Cherry blossom
-            div 2016 March 14
-            p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-              | The cherry blossom is the national flower of Japan. Cherry blossom season lasts for about a
-              | month every spring and is always weather dependent early March to early April is a good rule
-              | of thumb.
-      .col-sm-6.col-lg-4.mt-4
-        .card
-          .image-container.card-img-top
-            img(src="images/Autumn-color-Aoyama-Ginkgo.jpg" alt="post cover image")
-            .image-cover
-          .card-body
-            .d-flex.align-items-center
-              i.fa.fa-tag.mr-3
-              span
-                a(href="tag.html") Tokyo
-                a(href="tag.html") Culture
-                a(href="tag.html") Nature
-            h4.my-2
-              a(href="post.html") Autumn leaf color
-            div 2016 March 14
-            p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-              | Autumn leaf color is a phenomenon that affects the normal green leaves of many deciduous
-              | trees and shrubs by which they take on, during a few weeks in the autumn season, various
-              | shades of red, yellow, purple, black, blue, orange, magenta, and brown.
-      .col-sm-6.col-lg-4.mt-4
-        .card
-          .image-container.card-img-top
-            img(src="images/acomodation_bg.jpg" alt="post cover image")
-            .image-cover
-          .card-body
-            .d-flex.align-items-center
-              i.fa.fa-tag.mr-3
-              span
-                a(href="tag.html") Tokyo
-                a(href="tag.html") Culture
-                a(href="tag.html") Acomodation
-            h4.my-2
-              a(href="post.html") Ryokan
-            div 2016 March 14
-            p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-              | A ryokan (旅館) is a type of traditional Japanese inn that typically feature tatami-matted
-              | rooms, communal baths, and other public areas where visitors may wear yukata and talk with
-              | the owner.
-    .row.mt-4
-      .col-sm-6.offset-sm-3.col-lg-4.offset-lg-4
-        button.btn.w-100.d-flex.align-items-center.justify-content-center.text-white.bg-dark.py-3(type="button")
-          | Load more
+                  p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                    |!{post.description}
+  if(latestPosts)
+    section.latest-posts.container.mt-5
+      h1.text-center Lastest posts
+      .row#latest-posts
+        each post in latestPosts
+          .col-sm-6.col-lg-4.mt-4
+            .card
+              .image-container.card-img-top
+                img(src=(post.image!=undefined?image_path+post.image.name:image_path+'default-post.jpg') alt="post cover image")
+                .image-cover
+              .card-body
+                .d-flex.align-items-center
+                  i.fa.fa-tag.mr-3
+                  span
+                    each tag in post.tags
+                      a(href=`/tag/${tag.slug}`)=tag.name
+                      |&nbsp;
+                h4.my-2.overflow-hidden
+                  a.text-nowrap(href=`/post/${post.slug}`)=post.title
+                div=post.publishedTime
+                p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                  |!{post.description}
+      .row.mt-4
+        .col-sm-6.offset-sm-3.col-lg-4.offset-lg-4
+          button#load-post.btn.w-100.d-flex.align-items-center.justify-content-center.text-white.bg-dark.py-3(type="button")
+            | Load more
 
 block javascripts
   script(src="/javascripts/image.js")
   script(src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.1/min/tiny-slider.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js")
+  // load blueimp template engine
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/blueimp-JavaScript-Templates/3.12.0/js/tmpl.min.js')
+  script#tmpl-definition(type='text/x-tmpl').
+    {% for (var i=0; i<o.length; i++) { %}
+      <div class="col-sm-6 col-lg-4 mt-4">
+        <div class="card">
+            <div class="image-container card-img-top"><img src="https://admin.thesologuy.tk/images/{%=o[i].image?o[i].image.name:'default-post.jpg'%}" alt="post cover image" class="wide">
+                <div class="image-cover"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-tag mr-3"></i>
+                  <span>
+                    {% for (var j=0; j<o[i].tags.length; j++) { %}
+                      <a href="/tag/{%=o[i].tags[j].slug%}">{%=o[i].tags[j].name%}</a>&nbsp;
+                    {% } %}
+                  </span>
+                </div>
+                <h4 class="my-2 overflow-hidden"><a class="text-nowrap" href="/post/{%=o[i].slug%}">{%=o[i].title%}</a></h4>
+                <div>{%=o[i].publishedTime%}</div>
+                <p class="overflow-hidden text-justify mt-3" style="height: 4.5rem;">
+                  {%#o[i].description%}
+                </p>
+            </div>
+        </div>
+      </div>
+    {% } %}
   script.
     const slider = tns({
       items: 1,
@@ -166,4 +158,14 @@ block javascripts
               items: 3
           }
       }
-    });
+    })
+    $(function() {
+      let skip = 6
+      $('#load-post').click(function(){
+        $.get( `/post/load?skip=${skip}`, function( data ) {
+          console.log(data)
+          skip += data.length
+          $('#latest-posts').append(tmpl('tmpl-definition', data))
+        })
+      })
+    })
