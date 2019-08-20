@@ -4,7 +4,7 @@ block stylesheets
   link(rel="stylesheet" href="/stylesheets/index.css")
 
 block cover
-  img(src="https://admin.thesologuy.tk/images/1566190503470-travel.jpg" alt="cover image")
+  img(src=image_path+"1566190503470-travel.jpg" alt="cover image")
 
 block content
   section.about-me.container.mt-5
@@ -51,11 +51,11 @@ block content
             div destinations
         .col-md-4.my-3.my-md-0
           .stat.d-flex.flex-column.align-items-center
-            .display-4 150
+            .display-4=totalPost
             div posts
         .col-md-4
           .stat.d-flex.flex-column.align-items-center
-            .display-4 1K+
+            .display-4=totalImage
             div images & videos
   if(topPosts)
     section.top-posts.container.mt-5
@@ -161,11 +161,15 @@ block javascripts
     })
     $(function() {
       let skip = 6
-      $('#load-post').click(function(){
+      $('#load-post').click(function(event){
+        $('#load-post').text('Loading..')
         $.get( `/post/load?skip=${skip}`, function( data ) {
           console.log(data)
           skip += data.length
           $('#latest-posts').append(tmpl('tmpl-definition', data))
         })
+        .always(function() {
+          $('#load-post').text('Load more')
+        });
       })
     })

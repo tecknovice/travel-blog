@@ -19,7 +19,7 @@ exports.load=[
             .find({ status: 'published' })
             .sort({ updatedAt: 'desc' })
             .skip(Number(req.query.skip))
-            .limit(6)
+            .limit(3)
             .populate('image')
             .populate('tags')
             .exec()

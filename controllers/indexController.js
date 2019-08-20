@@ -16,6 +16,18 @@ exports.homepage = async function (req, res, next) {
                     .exec()
                 return result
             },
+            totalPost: async function () {
+                const result = await Post
+                    .count({ status: 'published' })
+                    .exec()
+                return result
+            },
+            totalImage: async function () {
+                const result = await Image
+                    .count()
+                    .exec()
+                return result
+            },
             topPosts: async function () {
                 const result = await Post
                     .find({ status: 'published' })
@@ -37,7 +49,7 @@ exports.homepage = async function (req, res, next) {
                 return result
             },
         })
-        res.render('index', { title: 'The solo guy', me: result.me, topPosts: result.topPosts, latestPosts: result.latestPosts })
+        res.render('index', { title: 'The solo guy', me: result.me, totalPost: result.totalPost, totalImage: result.totalImage, topPosts: result.topPosts, latestPosts: result.latestPosts })
     } catch (error) {
         next(error)
     }
