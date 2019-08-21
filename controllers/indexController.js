@@ -12,7 +12,7 @@ exports.homepage = async function (req, res, next) {
             me: async function () {
                 const result = await User
                     .findOne({ email: 'vanhung2210@gmail.com' })
-                    .populate({ path: 'image' })
+                    .populate({ path: 'avatar' })
                     .exec()
                 return result
             },
@@ -49,6 +49,7 @@ exports.homepage = async function (req, res, next) {
                 return result
             },
         })
+        debug('me',result.me)
         res.render('index', { title: 'The solo guy', me: result.me, totalPost: result.totalPost, totalImage: result.totalImage, topPosts: result.topPosts, latestPosts: result.latestPosts })
     } catch (error) {
         next(error)

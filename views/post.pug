@@ -1,0 +1,155 @@
+extends layout/base.pug
+
+block cover
+    img(src=(post.image!=undefined?image_path+post.image.name:image_path+"default-post.jpg") alt="cover image")
+
+block content
+    main.container
+        .row
+            article.post.col-lg-8.mt-5
+                section.mb-4.d-sm-flex.align-items-center
+                    .d-flex.align-items-center.mr-sm-4
+                        i.fa.fa-clock-o.mr-2
+                        span=post.publishedTime
+                    .d-flex.align-items-center.mt-2.mt-sm-0
+                        i.fa.fa-tag.mr-2
+                        div
+                            each tag in post.tags
+                                a(href='/tag/'+tag.slug)=tag.name
+                section.text-justify.overflow-hidden
+                    | !{post.content}
+                section.d-flex.align-items-center.mt-4
+                    h3.mb-0 Social
+                    .bg-dark.rounded.text-white.d-flex.align-items-center.p-2.mx-3
+                        i.fa.fa-share.mr-2
+                        span 150
+                    .bg-dark.rounded.text-white.d-flex.align-items-center.p-2
+                        i.fa.fa-thumbs-up.mr-2
+                        span 1500
+                section.mt-5
+                    h2 You may also like
+                    .row
+                        .col-sm-6.mt-4
+                            .card
+                                .image-container.card-img-top
+                                    img(src="images/sensoji.jpg" alt="post cover image")
+                                    .image-cover
+                                .card-body
+                                    .d-flex.align-items-center
+                                        i.fa.fa-tag.mr-3
+                                        span
+                                            a(href="tag.html") Tokyo
+                                            a(href="tag.html") Japan
+                                            a(href="tag.html") Culture
+                                    h4.my-2
+                                        a(href="post.html") Sensoji
+                                    div 2016 March 14
+                                    p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                                        | Sensō-ji (金龍山浅草寺 Kinryū-zan Sensō-ji) is an ancient Buddhist temple located in
+                                        | Asakusa, Tokyo, Japan. It is Tokyo's oldest temple, and one of its most
+                                        | significant. Formerly associated with the Tendai sect of Buddhism, it became
+                                        | independent after World War II.
+                        .col-sm-6.mt-4
+                            .card
+                                .image-container.card-img-top
+                                    img(src="images/tag-tokyo.jpg" alt="post cover image")
+                                    .image-cover
+                                .card-body
+                                    .d-flex.align-items-center
+                                        i.fa.fa-tag.mr-3
+                                        span
+                                            a(href="tag.html") Tokyo
+                                            a(href="tag.html") Culture
+                                            a(href="tag.html") Temple
+                                    h4.my-2
+                                        a(href="post.html") Zojoji Temple
+                                    div 2016 March 14
+                                    p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                                        | Zojoji Temple (増上寺, Zōjōji) is the head temple of the Jodo sect of Japanese
+                                        | Buddhism in the Kanto Region. Standing next to Tokyo Tower, the temple grounds
+                                        | consist of some impressive structures as well as a mausoleum of the Tokugawa
+                                        | family and a small museum.
+                section.mt-5
+                    h2 2 thoughts
+                    .mt-4
+                        div
+                            span.font-weight-bold.mr-2 Nguyễn Văn Hưng
+                            span.text-muted 2019 May 14 at 9:36am
+                        .mt-3.text-justify
+                            | I have travelled to Asakusa 3 years ago. It is one of the top tourist destinations in
+                            | Tokyo thanks to famous sights such as Sensoji Temple, Nakamise Dori, the nearby Skytree
+                            | and more! Plus it's a great area for traditional eats and souvenirs.
+                        button.mt-3.btn.btn-dark Reply
+                    .mt-4
+                        div
+                            span.font-weight-bold.mr-2 John Doe
+                            span.text-muted 2016 March 14 at 9:36am
+                        .mt-3.text-justify
+                            | Is Sensouji Temple crowded during Sakura?
+                            | Best time to visit?
+                        .text-justify.pl-5
+                            .mt-3
+                                div
+                                    span.font-weight-bold.mr-2 Qing Zi
+                                    span.text-muted 2016 March 14 at 9:36am
+                                .mt-2.text-justify
+                                    | Sensouji is always crowded. It is one of the most popular spots in Tokyo.
+                            .mt-3
+                                div
+                                    span.font-weight-bold.mr-2 John Doe
+                                    span.text-muted 2016 March 14 at 9:36am
+                                .mt-2.text-justify
+                                    | Qing Zi is it okay to visit at 10 AM?
+                        button.mt-3.btn.btn-dark Reply
+                    .mt-4
+                        h3 Leave your comment here
+                        form#comment-form(method="POST")
+                            .form-group
+                                textarea#comment.form-control(name="comment" rows="10" required="")
+                            .form-group.row
+                                label.col-sm-2.col-form-label(for="name") Name*
+                                .col-sm-10
+                                    input#name.form-control(type="text" name="name" placeholder="Name" required="")
+                            .form-group.row
+                                label.col-sm-2.col-form-label(for="email") Email*
+                                .col-sm-10
+                                    input#email.form-control(type="email" name="email" placeholder="Email" required="")
+                            .form-group.row
+                                label.col-sm-2.col-form-label(for="website") Website
+                                .col-sm-10
+                                    input#website.form-control(type="text" name="website" placeholder="Website")
+                            .form-group.row
+                                .col-sm-10
+                                    button.btn.btn-dark(type="submit") Post comment
+            aside.aside.col-lg-4.mt-5
+                if(topPosts)
+                    section
+                        h1 Top posts
+                        div
+                            each post in topPosts
+                                a.media.py-3.border-top(href='/post/'+post.slug)
+                                    .image-container(style="width: 100px; height: 70px;")
+                                        img(src=(post.image!=undefined?image_path+post.image.name:image_path+"default-post.jpg") alt="post thumbnail")
+                                        .image-cover
+                                    .media-body.ml-3
+                                        div=post.title
+                                        span.text-muted=post.publishedTime
+                if(tags)
+                    section.mt-5
+                        h1
+                            a(href="/tag") Tags
+                        .m-n1.py-3.border-top
+                            each tag in tags
+                                a.btn.btn-dark.m-1(href="/tag/"+tag.slug)=`${tag.name}(${tag.postCount})`
+                if(latestPosts)
+                    section.mt-5
+                        h1 Latest posts
+                        div
+                            each post in latestPosts
+                                a.media.py-3.border-top(href='/post/'+post.slug)
+                                    .image-container(style="width: 100px; height: 70px;")
+                                        img(src=(post.image!=undefined?image_path+post.image.name:image_path+"default-post.jpg") alt="post thumbnail")
+                                        .image-cover
+                                    .media-body.ml-3
+                                        div=post.title
+                                        span.text-muted=post.publishedTime

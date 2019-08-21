@@ -13,35 +13,26 @@ block content
         .d-flex.flex-column
           .image-container.rounded
             .image-cover
-            img.rounded(src="/images/avatar.jpg" alt="avatar")
+            img.rounded(src=(me.avatar!=undefined?image_path+me.avatar.name:image_path+'default-avatar.jpg') alt="avatar")
           .d-flex.justify-content-around.mt-3
-            a(href="#")
-              i.fa.fa-facebook-f
-            a(href="#")
-              i.fa.fa-instagram
-            a(href="#")
-              i.fa.fa-twitter
-            a(href="#")
-              i.fa.fa-youtube-play
+            if(me.socials.get('facebook'))
+              a(href=me.socials.get('facebook'))
+                i.fa.fa-facebook-f
+            if(me.socials.get('instagram'))
+              a(href=me.socials.get('instagram'))
+                i.fa.fa-instagram
+            if(me.socials.get('twitter'))
+              a(href=me.socials.get('twitter'))
+                i.fa.fa-twitter
+            if(me.socials.get('youtube'))
+              a(href=me.socials.get('youtube'))
+                i.fa.fa-youtube-play
       .col-md-8.mt-4.mt-md-0
         .d-flex.flex-column
           h1.text-center.text-md-left
-            a(href="#") About me
+            a(href="/about") About me
           .text-justify.overflow-hidden(style="height: 15rem;")
-            | Hi, I’m Hung, the founder of this website! Have you ever thought to your self one of the
-            | following:
-            ul(style="margin: 0;")
-              li “How do I find the money to travel? It seems too expensive for me.”
-              li “Where do I find the best travel deals?”
-              li “How do I save money on flights, accommodation, and other big expenses?”
-              li “How do I plan my trip?”
-              li “How do I stay safe and healthy?”
-              li “How do I maximize my time?”
-              li “I want to travel more but I don’t know the first step.”
-            |                         You are not alone. I am here to help you answer those
-            |                         questions and travel more with tested and proven tips and advice. This way, you can spend less
-            |                         time searching the Internet and being overwhelmed with information and more time doing the one
-            |                         thing you want to do: travel more.
+            | !{me.about}
   section.stats.d-flex.align-items-center.text-white.mt-5
     .container
       .row
@@ -113,7 +104,6 @@ block content
             | Load more
 
 block javascripts
-  script(src="/javascripts/image.js")
   script(src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.1/min/tiny-slider.js")
   script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js")
   // load blueimp template engine

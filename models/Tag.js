@@ -26,8 +26,15 @@ const tagSchema = new mongoose.Schema({
 tagSchema
     .virtual('slug')
     .get(function () {
-        return this.name.toLowerCase().split(' ').filter(item => item.length > 0).join('-') + '-' + this._id;
+        return this.name.toLowerCase().split(' ').filter(item => item.length > 0).join('-');
     });
+//Virtual for post
+tagSchema.virtual('postCount', {
+    ref: 'Post',
+    localField: '_id',
+    foreignField: 'tags',
+    count: true
+})
 const Tag = mongoose.model('Tag', tagSchema)
 
 module.exports = Tag
