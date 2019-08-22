@@ -16,6 +16,7 @@ block content
                         div
                             each tag in post.tags
                                 a(href='/tag/'+tag.slug)=tag.name
+                                |&nbsp;
                 section.text-justify.overflow-hidden
                     | !{post.content}
                 section.d-flex.align-items-center.mt-4

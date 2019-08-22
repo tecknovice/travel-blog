@@ -1,0 +1,75 @@
+extends layout/base.pug
+
+block cover
+    img(src=image_path+"1566190503470-travel.jpg" alt="cover image")
+
+block content
+    main.container
+        .row
+            article.post.col-lg-8.mt-5
+                section
+                    .bg-dark.mb-3
+                        img.img-fluid(src=(me.avatar!=undefined?image_path+me.avatar.name:image_path+"default-avatar.jpg") alt="avatar")
+                        .text-center.text-white This is me in Nikko (日光) - a city located in Tochigi Prefecture
+                    ul.list-group
+                        li.list-group-item
+                            strong Name:
+                            | &nbsp;
+                            span=me.name
+                        li.list-group-item
+                            strong Email:
+                            | &nbsp;
+                            a(href="mailto:"+me.email)=me.email
+                section.text-justify.overflow-hidden.mt-3
+                    | !{me.about}
+                section.mt-4
+                    h3 Social
+                    div.d-flex.align-items-center
+                        if(me.socials.get('facebook'))
+                            .bg-dark.rounded.d-flex.align-items-center.justify-content-center.p-2.mr-2(style="width:3rem;")
+                                a(href=me.socials.get('facebook'))
+                                    i.fa.fa-facebook-f.text-white
+                        if(me.socials.get('instagram'))
+                            .bg-dark.rounded.d-flex.align-items-center.justify-content-center.p-2.mr-2(style="width:3rem;")
+                                a(href=me.socials.get('instagram'))
+                                    i.fa.fa-instagram.text-white
+                        if(me.socials.get('twitter'))
+                            .bg-dark.rounded.d-flex.align-items-center.justify-content-center.p-2.mr-2(style="width:3rem;")
+                                a(href=me.socials.get('twitter'))
+                                    i.fa.fa-twitter.text-white
+                        if(me.socials.get('youtube'))
+                            .bg-dark.rounded.d-flex.align-items-center.justify-content-center.p-2(style="width:3rem;")
+                                a(href=me.socials.get('youtube'))
+                                    i.fa.fa-youtube-play.text-white
+            aside.aside.col-lg-4.mt-5
+                if(topPosts)
+                    section
+                        h1 Top posts
+                        div
+                            each post in topPosts
+                                a.media.py-3.border-top(href='/post/'+post.slug)
+                                    .image-container(style="width: 100px; height: 70px;")
+                                        img(src=(post.image!=undefined?image_path+post.image.name:image_path+"default-post.jpg") alt="post thumbnail")
+                                        .image-cover
+                                    .media-body.ml-3
+                                        div=post.title
+                                        span.text-muted=post.publishedTime
+                if(tags)
+                    section.mt-5
+                        h1
+                            a(href="/tag") Tags
+                        .m-n1.py-3.border-top
+                            each tag in tags
+                                a.btn.btn-dark.m-1(href="/tag/"+tag.slug)=`${tag.name}(${tag.postCount})`
+                if(latestPosts)
+                    section.mt-5
+                        h1 Latest posts
+                        div
+                            each post in latestPosts
+                                a.media.py-3.border-top(href='/post/'+post.slug)
+                                    .image-container(style="width: 100px; height: 70px;")
+                                        img(src=(post.image!=undefined?image_path+post.image.name:image_path+"default-post.jpg") alt="post thumbnail")
+                                        .image-cover
+                                    .media-body.ml-3
+                                        div=post.title
+                                        span.text-muted=post.publishedTime

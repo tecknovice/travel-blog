@@ -26,7 +26,7 @@ const tagSchema = new mongoose.Schema({
 tagSchema
     .virtual('slug')
     .get(function () {
-        return this.name.toLowerCase().split(' ').filter(item => item.length > 0).join('-');
+        return this.name.toLowerCase().split(' ').filter(item => item.length > 0).join('-')+'-'+this._id;
     });
 //Virtual for post
 tagSchema.virtual('postCount', {

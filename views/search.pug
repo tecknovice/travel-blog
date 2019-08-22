@@ -1,0 +1,41 @@
+extends layout/base.pug
+
+block cover
+    if(posts)
+        img(src=(posts[0].image!=undefined?image_path+posts[0].image.name:image_path+"default-post.jpg") alt="cover image")
+    else
+        img(src=image_path+"default-post.jpg" alt="cover image")
+
+block content
+    if(posts)
+        section.tag.container.mt-5
+            .row#posts
+                each post in posts
+                    .col-sm-6.col-lg-4.mt-4
+                        .card
+                            .image-container.card-img-top
+                                img(src=(post.image!=undefined?image_path+post.image.name:image_path+'default-post.jpg') alt="post cover image")
+                                .image-cover
+                            .card-body
+                                .d-flex.align-items-center
+                                    i.fa.fa-tag.mr-3
+                                    span
+                                        each tag in post.tags
+                                            a(href="/tag/"+tag.slug)=tag.name
+                                            |&nbsp;
+                                h4.my-2
+                                    a(href="/post/"+post.slug)=post.title
+                                div=post.publishedTime
+                                p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                                    | !{post.description}
+            .row.mt-4
+                .col-sm-6.offset-sm-3.col-lg-4.offset-lg-4
+                    button#load-button.btn.w-100.d-flex.align-items-center.justify-content-center.text-white.bg-dark.py-3(type="button" keyword=keyword)
+                        | Load more
+block javascripts
+  script.
+    function callback({html}){
+      $('#posts').append(html)
+    }
+block modules
+  include layout/load-posts.pug

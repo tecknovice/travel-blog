@@ -1,0 +1,65 @@
+// load blueimp template engine
+script(src='https://cdnjs.cloudflare.com/ajax/libs/blueimp-JavaScript-Templates/3.12.0/js/tmpl.min.js')
+script#tmpl-definition(type='text/x-tmpl').
+    {% for (var i=0; i<o.length; i++) { %}
+      <div class="col-sm-6 col-lg-4 mt-4">
+        <div class="card">
+            <div class="image-container card-img-top"><img src="https://admin.thesologuy.tk/images/{%=o[i].image?o[i].image.name:'default-post.jpg'%}" alt="post cover image" class="wide">
+                <div class="image-cover"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-tag mr-3"></i>
+                  <span>
+                    {% for (var j=0; j<o[i].tags.length; j++) { %}
+                      <a href="/tag/{%=o[i].tags[j].slug%}">{%=o[i].tags[j].name%}</a>&nbsp;
+                    {% } %}
+                  </span>
+                </div>
+                <h4 class="my-2 overflow-hidden"><a class="text-nowrap" href="/post/{%=o[i].slug%}">{%=o[i].title%}</a></h4>
+                <div>{%=o[i].publishedTime%}</div>
+                <p class="overflow-hidden text-justify mt-3" style="height: 4.5rem;">
+                  {%#o[i].description%}
+                </p>
+            </div>
+        </div>
+      </div>
+    {% } %}
+script.
+    $(function() {
+      let skip = 6
+      $('#load-button').click(function(event){
+        $('#load-button').text('Loading..')
+        const tag = $('#load-button').attr('tag')
+        const keyword = $('#load-button').attr('keyword')
+        //- console.log('tag',tag)
+        //- console.log('keyword',keyword)
+        if(tag)
+            $.get( `/post/load?skip=${skip}&tag=${tag}`, function( data ) {
+                skip += data.length
+                let html = tmpl('tmpl-definition', data)
+                callback({html})
+            })
+            .always(function() {
+                $('#load-button').text('Load more')
+            });
+        else if(keyword)
+            $.get( `/post/load?skip=${skip}&keyword=${keyword}`, function( data ) {
+                skip += data.length
+                let html = tmpl('tmpl-definition', data)
+                callback({html})
+            })
+            .always(function() {
+                $('#load-button').text('Load more')
+            });
+        else
+            $.get( `/post/load?skip=${skip}`, function( data ) {
+                skip += data.length
+                let html = tmpl('tmpl-definition', data)
+                callback({html})
+            })
+            .always(function() {
+                $('#load-button').text('Load more')
+            });
+      })
+    })

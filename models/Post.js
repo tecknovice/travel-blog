@@ -33,7 +33,7 @@ const postSchema = new mongoose.Schema({
     {
         timestamps: true,
         toObject: {
-            virtuals: true
+            // virtuals: true
         },
         toJSON: {
             virtuals: true
@@ -44,7 +44,9 @@ const postSchema = new mongoose.Schema({
 postSchema
     .virtual('description')
     .get(function () {
-        return this.content.replace(/<[^>]+>/g, '')
+        let desc = this.content.replace(/<[^>]+>/g, '')
+        if (desc.length > 150) desc = desc.substring(0, 150)
+        return desc
     });
 // Virtual for slug
 postSchema

@@ -100,39 +100,11 @@ block content
                   |!{post.description}
       .row.mt-4
         .col-sm-6.offset-sm-3.col-lg-4.offset-lg-4
-          button#load-post.btn.w-100.d-flex.align-items-center.justify-content-center.text-white.bg-dark.py-3(type="button")
+          button#load-button.btn.w-100.d-flex.align-items-center.justify-content-center.text-white.bg-dark.py-3(type="button")
             | Load more
 
 block javascripts
   script(src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.1/min/tiny-slider.js")
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js")
-  // load blueimp template engine
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/blueimp-JavaScript-Templates/3.12.0/js/tmpl.min.js')
-  script#tmpl-definition(type='text/x-tmpl').
-    {% for (var i=0; i<o.length; i++) { %}
-      <div class="col-sm-6 col-lg-4 mt-4">
-        <div class="card">
-            <div class="image-container card-img-top"><img src="https://admin.thesologuy.tk/images/{%=o[i].image?o[i].image.name:'default-post.jpg'%}" alt="post cover image" class="wide">
-                <div class="image-cover"></div>
-            </div>
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <i class="fa fa-tag mr-3"></i>
-                  <span>
-                    {% for (var j=0; j<o[i].tags.length; j++) { %}
-                      <a href="/tag/{%=o[i].tags[j].slug%}">{%=o[i].tags[j].name%}</a>&nbsp;
-                    {% } %}
-                  </span>
-                </div>
-                <h4 class="my-2 overflow-hidden"><a class="text-nowrap" href="/post/{%=o[i].slug%}">{%=o[i].title%}</a></h4>
-                <div>{%=o[i].publishedTime%}</div>
-                <p class="overflow-hidden text-justify mt-3" style="height: 4.5rem;">
-                  {%#o[i].description%}
-                </p>
-            </div>
-        </div>
-      </div>
-    {% } %}
   script.
     const slider = tns({
       items: 1,
@@ -149,17 +121,8 @@ block javascripts
           }
       }
     })
-    $(function() {
-      let skip = 6
-      $('#load-post').click(function(event){
-        $('#load-post').text('Loading..')
-        $.get( `/post/load?skip=${skip}`, function( data ) {
-          console.log(data)
-          skip += data.length
-          $('#latest-posts').append(tmpl('tmpl-definition', data))
-        })
-        .always(function() {
-          $('#load-post').text('Load more')
-        });
-      })
-    })
+    function callback({html}){
+      $('#latest-posts').append(html)
+    }
+block modules
+  include layout/load-posts.pug

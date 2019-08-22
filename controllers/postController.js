@@ -1,14 +1,15 @@
 const debug = require('debug')('travel-blog:postController')
-const { param, query, validationResult, sanitizeQuery, sanitizeBody } = require('express-validator')
+const { param, query, validationResult, sanitizeQuery, sanitizeParam } = require('express-validator')
 const ObjectId = require('mongoose').Types.ObjectId;
 const Post = require('../models/Post')
 const Tag = require('../models/Tag')
-const Image = require('../models/Image')
+const User = require('../models/User')
 const parallel = require('async/parallel')
 
 exports.load = [
     query('skip', 'skip must be an integer greater or equal 6').isInt({ min: 6 }),
-    sanitizeQuery('skip').trim(),
+    query('tag', 'tag must be a MongoId').optional().isMongoId(),
+    sanitizeQuery('*').escape(),
     async function (req, res, next) {
         debug('load:req', req.query)
         const result = validationResult(req);
@@ -17,14 +18,34 @@ exports.load = [
             return
         }
         try {
-            const posts = await Post
-                .find({ status: 'published' })
-                .sort({ updatedAt: 'desc' })
-                .skip(Number(req.query.skip))
-                .limit(3)
-                .populate('image')
-                .populate('tags')
-                .exec()
+            let posts
+            if (req.query.tag)
+                posts = await Post
+                    .find({ status: 'published', 'tags': req.query.tag })
+                    .sort({ views: 'desc' })
+                    .skip(Number(req.query.skip))
+                    .limit(6)
+                    .populate('image')
+                    .populate('tags')
+                    .exec()
+            else if (req.query.keyword)
+                posts = await Post
+                    .find({ status: 'published', title: { $regex: req.query.keyword, $options: 'i' } })
+                    .sort({ views: 'desc' })
+                    .skip(Number(req.query.skip))
+                    .limit(6)
+                    .populate('image')
+                    .populate('tags')
+                    .exec()
+            else
+                posts = await Post
+                    .find({ status: 'published' })
+                    .sort({ updatedAt: 'desc' })
+                    .skip(Number(req.query.skip))
+                    .limit(6)
+                    .populate('image')
+                    .populate('tags')
+                    .exec()
             res.send(posts)
         } catch (error) {
             res.status(500).send(error)
@@ -42,7 +63,7 @@ exports.post = [
         if (isValid) return Promise.resolve()
         else return Promise.reject()
     }),
-    sanitizeBody('slug').trim(),
+    sanitizeParam('slug').escape(),
     async function (req, res, next) {
 
         debug('post:req', req.params)
@@ -71,6 +92,7 @@ exports.post = [
             }
             //get aside data
             const [asideError, asideResults] = await aside()
+            debug('post:asideResults', asideResults)
             if (asideError) return next(asideError)
             //render post            
             res.render('post', { title: post.title, post, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
@@ -79,13 +101,24 @@ exports.post = [
         }
     }]
 
+exports.about = async function (req, res, next) {
+    const me = await User
+        .findOne({ email: 'vanhung2210@gmail.com' })
+        .populate({ path: 'avatar' })
+        .exec()
+    //get aside data
+    const [asideError, asideResults] = await aside()
+    if (asideError) return next(asideError)
+    res.render('about', { title: 'About Thesologuy', me, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
+}
+
 async function aside() {
     //get top posts, latest posts, tags
     try {
         const results = await parallel({
             topPosts: async function () {
                 const result = await Post
-                    .find({ status: 'published' })
+                    .find({ status: 'published' }, 'title publishedTime image views')
                     .sort({ views: 'desc' })
                     .limit(6)
                     .populate('image')
@@ -93,7 +126,7 @@ async function aside() {
                 return result
             },
             tags: async function () {
-                const result = await Tag.find().populate('postCount')
+                const result = await Tag.find(null, 'name').populate('postCount')
                 // if (tags) {
                 //     const promise = tags.map(async tag => {
                 //         const postCount = await Post.countDocuments({ 'tags': tag._id })
@@ -114,7 +147,7 @@ async function aside() {
             },
             latestPosts: async function () {
                 const result = await Post
-                    .find({ status: 'published' })
+                    .find({ status: 'published' }, 'title publishedTime image updatedAt')
                     .sort({ updatedAt: 'desc' })
                     .limit(6)
                     .populate('image')
