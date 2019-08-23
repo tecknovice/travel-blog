@@ -1,6 +1,7 @@
 const debug = require('debug')('travel-blog:postController')
-const { param, query, validationResult, sanitizeQuery, sanitizeParam } = require('express-validator')
+const { body, param, query, validationResult, sanitizeBody, sanitizeQuery, sanitizeParam } = require('express-validator')
 const ObjectId = require('mongoose').Types.ObjectId;
+const Comment = require('../models/Comment')
 const Post = require('../models/Post')
 const Tag = require('../models/Tag')
 const User = require('../models/User')
@@ -90,9 +91,9 @@ exports.post = [
                 res.redirect('/post/' + post.slug)
                 return
             }
+            debug('post:post', post)
             //get aside data
             const [asideError, asideResults] = await aside()
-            debug('post:asideResults', asideResults)
             if (asideError) return next(asideError)
             //render post            
             res.render('post', { title: post.title, post, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
@@ -111,6 +112,44 @@ exports.about = async function (req, res, next) {
     if (asideError) return next(asideError)
     res.render('about', { title: 'About Thesologuy', me, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
 }
+
+exports.comment = [
+    body('post', 'post is not MongoId').isMongoId(),
+    body('comment', 'Comment not exceeds 10000 characters').isLength({ max: 10000 }),
+    body('name', 'Name is required').isLength({ min: 1 }),
+    body('email', 'Email is invalid').isEmail(),
+    body('website', 'Website is invalid').optional().isURL(),
+    sanitizeBody('*').escape(),
+    async function (req, res, next) {
+        debug('comment:req.body', req.body)
+        const result = await validationResult(req)
+        if (!result.isEmpty()) {
+            res.status(400).send({ errors: result.errors })
+            return
+        }
+        try {
+            const comment = new Comment({
+                comment: req.body.comment,
+                post: req.body.post,
+                visitor: {
+                    name: req.body.name,
+                    email: req.body.email,
+                    website: req.body.website
+                }
+            })
+            await comment.save()
+            res.send(comment)
+        } catch (error) {
+            res.status(500).send(error)
+        }
+    }
+]
+
+exports.reply = [
+    async function (req, res, next) {
+        res.send('NOT IMPLEMENTED: post reply POST')
+    }
+]
 
 async function aside() {
     //get top posts, latest posts, tags

@@ -25,6 +25,11 @@ const postSchema = new mongoose.Schema({
         enum: ['published', 'draft'],
         default: 'draft'
     },
+    discussable:{
+        type: Boolean,
+        required: true,
+        default: true
+    },
     views: {
         type: Number,
         default: 0

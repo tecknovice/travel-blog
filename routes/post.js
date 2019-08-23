@@ -6,5 +6,9 @@ const postController = require('../controllers/postController')
 router.get('/load', postController.load);
 /* GET post */
 router.get('/:slug', postController.post);
+/* POST comment */
+router.post('/comment', postController.comment);
+/* POST reply */
+router.post('/reply', postController.reply);
 
 module.exports = router;
