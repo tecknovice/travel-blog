@@ -71,40 +71,43 @@ block content
                                         | consist of some impressive structures as well as a mausoleum of the Tokugawa
                                         | family and a small museum.
                 section.mt-5
-                    h2 2 thoughts
+                    if(comments.length>0)
+                        h2=comments.length
+                            |&nbsp;thoughts
+                    else
+                        h2 No comments
                     section#thoughts
-                        .mt-4
-                            div
-                                span.font-weight-bold.mr-2 Nguyễn Văn Hưng
-                                span.text-muted 2019 May 14 at 9:36am
-                            .mt-3.text-justify
-                                | I have travelled to Asakusa 3 years ago. It is one of the top tourist destinations in
-                                | Tokyo thanks to famous sights such as Sensoji Temple, Nakamise Dori, the nearby Skytree
-                                | and more! Plus it's a great area for traditional eats and souvenirs.
-                            if(post.discussable)
-                                button.mt-3.btn.btn-dark Reply
-                        .mt-4
-                            div
-                                span.font-weight-bold.mr-2 John Doe
-                                span.text-muted 2016 March 14 at 9:36am
-                            .mt-3.text-justify
-                                | Is Sensouji Temple crowded during Sakura?
-                                | Best time to visit?
-                            .text-justify.pl-5
-                                .mt-3
-                                    div
-                                        span.font-weight-bold.mr-2 Qing Zi
-                                        span.text-muted 2016 March 14 at 9:36am
-                                    .mt-2.text-justify
-                                        | Sensouji is always crowded. It is one of the most popular spots in Tokyo.
-                                .mt-3
-                                    div
-                                        span.font-weight-bold.mr-2 John Doe
-                                        span.text-muted 2016 March 14 at 9:36am
-                                    .mt-2.text-justify
-                                        | Qing Zi is it okay to visit at 10 AM?
-                            if(post.discussable)
-                                button.mt-3.btn.btn-dark Reply
+                        each comment in comments
+                            .mt-3.pt-2.border-top
+                                div
+                                    span.font-weight-bold.mr-2=comment.visitor.get('name')
+                                    span.text-muted=comment.commentedTime
+                                .mt-3.text-justify
+                                    | !{comment.comment}
+                                .text-justify.pl-5.replies
+                                if(post.discussable)                                    
+                                    .reply-form.mt-3(style="display: none;")
+                                        .form-group.d-none
+                                            input.commentId.form-control(type="text" name="commentId" value=comment._id )
+                                        .form-group
+                                            textarea.reply.form-control(name="comment" rows="5" placeholder="Enter your reply here")
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="name") Name*
+                                            .col-sm-10
+                                                input.name.form-control(type="text" name="name" placeholder="Name" )
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="email") Email*
+                                            .col-sm-10
+                                                input.email.form-control(type="text" name="email" placeholder="Email" )
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="website") Website
+                                            .col-sm-10
+                                                input.website.form-control(type="text" name="website" placeholder="Website")
+                                        .form-group.row
+                                            .col-sm-10
+                                                button.reply-btn.btn.btn-dark.mr-4(type="button") Post reply
+                                                button.hide-form-btn.btn.btn-dark(type="button") Cancel
+                                    button.show-form-btn.mt-3.btn.btn-dark Reply
                     if(post.discussable)
                         section.mt-4
                             h3 Leave your comment here
@@ -166,18 +169,32 @@ block javascripts
     // load blueimp template engine
     script(src='https://cdnjs.cloudflare.com/ajax/libs/blueimp-JavaScript-Templates/3.12.0/js/tmpl.min.js')
     script#comment-tmpl(type='text/x-tmpl').
-        <div class="mt-4">
+        <div class="mt-3 pt-2 border-top">
             <div>
                 <span class="font-weight-bold mr-2">{%=o.visitor.name%}</span>
                 <span class="text-muted">{%=o.commentedTime%}</span>
-                <span class="text-muted font-italic font-weight-light">
+            </div>
+            <div class="mt-3 text-muted font-italic font-weight-light">
                     {% if (o.status=='pending') { %}
                         <mark>Waiting for approval</mark>
                     {% } %}
-                </span>
             </div>
             <div class="mt-3 text-justify">{%=o.comment%}</div>
-            <button class="mt-3 btn btn-dark">Reply</button>
+        </div>
+    script#reply-tmpl(type='text/x-tmpl').
+        <div class="mt-3">
+            <div>
+                <span class="font-weight-bold mr-2">{%=o.visitor.name%}</span>
+                <span class="text-muted">{%=o.repliedTime%}</span>
+            </div>
+            <div class="mt-3 text-muted font-italic font-weight-light">
+                    {% if (o.status=='pending') { %}
+                        <mark>Waiting for approval</mark>
+                    {% } %}
+            </div>
+            <div class="mt-2 text-justify">
+                {%=o.reply%}
+            </div>
         </div>
     script.
         $('#comment-btn').on('click', () => {
@@ -207,5 +224,60 @@ block javascripts
                         console.log(comment)
                         $('#thoughts').append(tmpl('comment-tmpl',comment))
                         $('#comment,#name,#email').val('')
+                    })
+        })
+        $('.show-form-btn').click(function(){
+            $(this).hide()
+            $(this).prev().show()
+        })
+        $('.hide-form-btn').click(function(){
+            $(this).parents(".reply-form").hide()
+            $(this).parents(".reply-form").next().show()
+        })
+        $('.reply-btn').on('click', function(){
+            const replyForm = $(this).parents(".reply-form")
+            const replies = replyForm.prev()
+            const commentElement = replyForm.find('.commentId')
+            const replyElement = replyForm.find('.reply')
+            const nameElement = replyForm.find('.name')
+            const emailElement = replyForm.find('.email')
+            const websiteElement = replyForm.find('.website')
+            const comment = commentElement.val()
+            const reply = replyElement.val()
+            const name = nameElement.val()
+            const email = emailElement.val()
+            const website = websiteElement.val()
+            console.log(replies)
+            if(website.length > 0)            
+                $.post(
+                    '/post/reply', 
+                    {
+                    comment, reply, name, email, website
+                    }, 
+                    function( reply ) {
+                        console.log(reply)
+                        replies.append(tmpl('reply-tmpl',reply))
+                        replyElement.val('')
+                        nameElement.val('')
+                        emailElement.val('')
+                        websiteElement.val('')
+                        replyForm.hide()
+                        replyForm.next().show()
+                    })
+            else
+                $.post( 
+                    '/post/reply', 
+                    {
+                    comment, reply, name, email
+                    }, 
+                    function( comment ) {
+                        console.log(comment)
+                        replies.append(tmpl('reply-tmpl',reply))
+                        replyElement.val('')
+                        nameElement.val('')
+                        emailElement.val('')
+                        websiteElement.val('')
+                        replyForm.hide()
+                        replyForm.next().show()
                     })
         })

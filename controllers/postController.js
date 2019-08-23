@@ -1,6 +1,7 @@
 const debug = require('debug')('travel-blog:postController')
 const { body, param, query, validationResult, sanitizeBody, sanitizeQuery, sanitizeParam } = require('express-validator')
 const ObjectId = require('mongoose').Types.ObjectId;
+const Reply = require('../models/Reply')
 const Comment = require('../models/Comment')
 const Post = require('../models/Post')
 const Tag = require('../models/Tag')
@@ -91,12 +92,13 @@ exports.post = [
                 res.redirect('/post/' + post.slug)
                 return
             }
-            debug('post:post', post)
+            //get comments
+            const comments = await Comment.find({ status: 'approved', post: post._id }).sort({ createdAt: 'desc' })
             //get aside data
             const [asideError, asideResults] = await aside()
             if (asideError) return next(asideError)
             //render post            
-            res.render('post', { title: post.title, post, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
+            res.render('post', { title: post.title, post, comments, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
         } catch (error) {
             next(error)
         }
@@ -129,8 +131,8 @@ exports.comment = [
         }
         try {
             const comment = new Comment({
-                comment: req.body.comment,
                 post: req.body.post,
+                comment: req.body.comment,
                 visitor: {
                     name: req.body.name,
                     email: req.body.email,
@@ -146,8 +148,34 @@ exports.comment = [
 ]
 
 exports.reply = [
+    body('comment', 'comment is not MongoId').isMongoId(),
+    body('reply', 'Reply can not exceed 10000 characters').isLength({ max: 10000 }),
+    body('name', 'Name is required').isLength({ min: 1 }),
+    body('email', 'Email is invalid').isEmail(),
+    body('website', 'Website is invalid').optional().isURL(),
+    sanitizeBody('*').escape(),
     async function (req, res, next) {
-        res.send('NOT IMPLEMENTED: post reply POST')
+        debug('reply:req.body', req.body)
+        const result = await validationResult(req)
+        if (!result.isEmpty()) {
+            res.status(400).send({ errors: result.errors })
+            return
+        }
+        try {
+            const reply = new Reply({
+                comment: req.body.comment,
+                reply: req.body.reply,
+                visitor: {
+                    name: req.body.name,
+                    email: req.body.email,
+                    website: req.body.website
+                }
+            })
+            await reply.save()
+            res.send(reply)
+        } catch (error) {
+            res.status(500).send(error)
+        }
     }
 ]
 
