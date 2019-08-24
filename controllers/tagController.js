@@ -86,18 +86,18 @@ exports.tag = [
     }]
 
 exports.list = async function (req, res, next) {
-    const tags = await Tag
-        .find()
-        .populate('image')
-        .populate({
-            path: 'postCount',
-            options: {
-                sort: { 'postCount': 'asc' }
-            }
-        })
-        .limit(12)
-        .exec()
-    if (tags) {
+    try {
+        const tags = await Tag
+            .find()
+            .populate('image')
+            .populate({
+                path: 'postCount',
+                options: {
+                    sort: { 'postCount': 'asc' }
+                }
+            })
+            .limit(12)
+            .exec()
         // const promise = tags.map(async tag => {
         //     const postCount = await Post.countDocuments({ 'tags': tag._id })
         //     const added = {
@@ -111,7 +111,7 @@ exports.list = async function (req, res, next) {
         // })
         // const result = await Promise.all(promise)
         res.render('tag-list', { title: 'Tags list', tags })
+    } catch (error) {
+        next(error)
     }
-    else
-        res.render('tag-list', { title: 'Tags list' })
 }

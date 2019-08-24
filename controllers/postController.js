@@ -67,8 +67,6 @@ exports.post = [
     }),
     sanitizeParam('slug').escape(),
     async function (req, res, next) {
-
-        debug('post:req', req.params)
         let error
         const result = await validationResult(req)
         if (!result.isEmpty()) {
@@ -93,7 +91,14 @@ exports.post = [
                 return
             }
             //get comments
-            const comments = await Comment.find({ status: 'approved', post: post._id }).sort({ createdAt: 'desc' })
+            const comments = await Comment
+                .find({ status: 'approved', post: post._id })
+                .sort({ createdAt: 'desc' })
+                .populate({
+                    path: 'replies',
+                    match: { status: 'approved' }
+                })
+            debug('post:comments', comments)
             //get aside data
             const [asideError, asideResults] = await aside()
             if (asideError) return next(asideError)
@@ -105,14 +110,18 @@ exports.post = [
     }]
 
 exports.about = async function (req, res, next) {
-    const me = await User
-        .findOne({ email: 'vanhung2210@gmail.com' })
-        .populate({ path: 'avatar' })
-        .exec()
-    //get aside data
-    const [asideError, asideResults] = await aside()
-    if (asideError) return next(asideError)
-    res.render('about', { title: 'About Thesologuy', me, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
+    try {
+        const me = await User
+            .findOne({ email: 'vanhung2210@gmail.com' })
+            .populate({ path: 'avatar' })
+            .exec()
+        //get aside data
+        const [asideError, asideResults] = await aside()
+        if (asideError) return next(asideError)
+        res.render('about', { title: 'About Thesologuy', me, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
+    } catch (error) {
+        next(error)
+    }
 }
 
 exports.comment = [

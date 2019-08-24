@@ -43,7 +43,10 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  if(req.app.get('env') === 'development')
+    res.render('error-dev')
+  else
+    res.render('error-prod',{title: 'Page not found'})
 });
 
 module.exports = app;

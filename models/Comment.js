@@ -32,6 +32,13 @@ const commentSchema = new mongoose.Schema({
             virtuals: true
         }
     })
+
+commentSchema.virtual('replies', {
+    ref: 'Reply',
+    localField: '_id',
+    foreignField: 'comment',
+    options: { sort: { createdAt: 'asc' } }
+})
 // Virtual for published time
 commentSchema
     .virtual('commentedTime')

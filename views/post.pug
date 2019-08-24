@@ -85,6 +85,13 @@ block content
                                 .mt-3.text-justify
                                     | !{comment.comment}
                                 .text-justify.pl-5.replies
+                                    each reply in comment.replies
+                                        .mt-3
+                                            div
+                                                span.font-weight-bold.mr-2=reply.visitor.get('name')
+                                                span.text-muted=reply.repliedTime
+                                            .mt-2.text-justify
+                                                | !{reply.reply}
                                 if(post.discussable)                                    
                                     .reply-form.mt-3(style="display: none;")
                                         .form-group.d-none
