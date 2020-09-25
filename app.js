@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
-  res.locals.image_path = 'http://admin.thesologuy.info/images/';
+  res.locals.image_path = 'https://admin.thesologuy.info/images/';
   next();
 });
 
