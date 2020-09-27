@@ -1,10 +1,9 @@
 {
   "name": "travel-blog",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "env-cmd -f ./config/config.env nodemon ./bin/www"
+    "start": "env-cmd -f ./config/config.env nodemon ./bin/www"
   },
   "dependencies": {
     "async": "^3.1.0",
