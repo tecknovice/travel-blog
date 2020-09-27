@@ -1,7 +1,7 @@
 extends layout/base.pug
 
 block cover
-  img(src=image_path+"1566207328543-tags.jpg" alt="cover image")
+  img(src=image_path+"default-tags.jpg" alt="cover image")
 
 block content
   section.tags.container.mt-5.text-white
@@ -12,7 +12,7 @@ block content
             .card
               a.text-center.text-white(href="/tag/"+tag.slug)
                 .image-container
-                  img(src=(tag.image!=undefined?image_path+tag.image.name:image_path+"1566207328543-tags.jpg") alt="tag cover image")
+                  img(src=(tag.image!=undefined?image_path+tag.image.name:image_path+"default-tags.jpg") alt="tag cover image")
                   .image-cover
                 .position-absolute.w-100.p-3(style="bottom: 0;")
                   h1.overflow-hidden(style="white-space:nowrap;")=tag.name
@@ -34,7 +34,7 @@ block javascripts
         <div class="card">
             <a class="text-center text-white" href="/tag/{%=o[i].slug%}">
                 <div class="image-container">
-                  <img src="https://static.thesologuy.info/images/{%=o[i].image?o[i].image.name:'default-tag.jpg'%}" alt="tag cover image">
+                  <img src="https://static.thesologuy.info/images/{%=o[i].image?o[i].image.name:'default-tags.jpg'%}" alt="tag cover image">
                   <div class="image-cover"></div>
                 </div>
                 <div class="position-absolute w-100 p-3" style="bottom: 0;">
