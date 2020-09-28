@@ -90,6 +90,8 @@ exports.post = [
                 res.redirect('/post/' + post.slug)
                 return
             }
+            //increase view count by 1
+            await Post.findByIdAndUpdate(id, { views: post.views+1 })
             //get comments
             const comments = await Comment
                 .find({ status: 'approved', post: post._id })
