@@ -63,7 +63,7 @@ postSchema
 postSchema
     .virtual('publishedTime')
     .get(function () {
-        return moment(this.updatedAt).format('YYYY-MM-DD HH:mm:ss')
+        return moment(this.createdAt).format('YYYY-MM-DD HH:mm:ss')
     });
 const Post = mongoose.model('Post', postSchema)
 

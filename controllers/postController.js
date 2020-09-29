@@ -42,7 +42,7 @@ exports.load = [
             else
                 posts = await Post
                     .find({ status: 'published' })
-                    .sort({ updatedAt: 'desc' })
+                    .sort({ createdAt: 'desc' })
                     .skip(Number(req.query.skip))
                     .limit(6)
                     .populate('image')
@@ -225,8 +225,8 @@ async function aside() {
             },
             latestPosts: async function () {
                 const result = await Post
-                    .find({ status: 'published' }, 'title publishedTime image updatedAt')
-                    .sort({ updatedAt: 'desc' })
+                    .find({ status: 'published' }, 'title publishedTime image createdAt')
+                    .sort({ createdAt: 'desc' })
                     .limit(6)
                     .populate('image')
                     .exec()

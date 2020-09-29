@@ -41,7 +41,7 @@ exports.homePage = async function (req, res, next) {
             latestPosts: async function () {
                 const result = await Post
                     .find({ status: 'published' })
-                    .sort({ updatedAt: 'desc' })
+                    .sort({ createdAt: 'desc' })
                     .limit(6)
                     .populate('image')
                     .populate('tags')
