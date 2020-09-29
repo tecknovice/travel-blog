@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "debug": "DEBUG=travel-blog:* env-cmd -f ./config/config.env nodemon  --inspect ./bin/www",
     "start": "env-cmd -f ./config/config.env nodemon ./bin/www"
   },
   "dependencies": {

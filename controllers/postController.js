@@ -24,7 +24,7 @@ exports.load = [
             if (req.query.tag)
                 posts = await Post
                     .find({ status: 'published', 'tags': req.query.tag })
-                    .sort({ views: 'desc' })
+                    .sort({ createdAt: 'desc' })
                     .skip(Number(req.query.skip))
                     .limit(6)
                     .populate('image')
@@ -92,6 +92,24 @@ exports.post = [
             }
             //increase view count by 1
             await Post.findByIdAndUpdate(id, { views: post.views+1 })
+            //get related posts
+            const activeTagIds =  post.tags.map(tag => tag._id)
+            const allPosts = await Post
+                .find({ _id: { $ne: post._id } })
+                .sort({ createdAt: 'desc' })
+                .exec();
+            const postsMap = new Map()
+            allPosts.forEach(currentPost =>{
+                let currentTagIds = currentPost.tags.map(tag => tag._id)
+                let totalMatchingTag = activeTagIds.filter(tagId => currentTagIds.includes(tagId)).length;
+                postsMap.set(currentPost, totalMatchingTag);
+            })
+            const sortedPostsMap = new Map([...postsMap.entries()].sort((a, b) => b[1] - a[1]));
+            const sortedPosts = [...sortedPostsMap.keys()]
+            const relatedPosts = sortedPosts.slice(0, 2)
+            relatedPosts.forEach(async currentPost => {
+                await currentPost.populate('tags').populate('image').execPopulate();
+            })
             //get comments
             const comments = await Comment
                 .find({ status: 'approved', post: post._id })
@@ -105,7 +123,7 @@ exports.post = [
             const [asideError, asideResults] = await aside()
             if (asideError) return next(asideError)
             //render post            
-            res.render('post', { title: post.title, post, comments, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
+            res.render('post', { title: post.title, post, relatedPosts, comments, topPosts: asideResults.topPosts, tags: asideResults.tags, latestPosts: asideResults.latestPosts })
         } catch (error) {
             next(error)
         }

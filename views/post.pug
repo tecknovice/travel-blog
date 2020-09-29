@@ -30,46 +30,24 @@ block content
                 section.mt-5
                     h2 You may also like
                     .row
-                        .col-sm-6.mt-4
-                            .card
-                                .image-container.card-img-top
-                                    img(src="images/sensoji.jpg" alt="post cover image")
-                                    .image-cover
-                                .card-body
-                                    .d-flex.align-items-center
-                                        i.fa.fa-tag.mr-3
-                                        span
-                                            a(href="tag.html") Tokyo
-                                            a(href="tag.html") Japan
-                                            a(href="tag.html") Culture
-                                    h4.my-2
-                                        a(href="post.html") Sensoji
-                                    div 2016 March 14
-                                    p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-                                        | Sensō-ji (金龍山浅草寺 Kinryū-zan Sensō-ji) is an ancient Buddhist temple located in
-                                        | Asakusa, Tokyo, Japan. It is Tokyo's oldest temple, and one of its most
-                                        | significant. Formerly associated with the Tendai sect of Buddhism, it became
-                                        | independent after World War II.
-                        .col-sm-6.mt-4
-                            .card
-                                .image-container.card-img-top
-                                    img(src="images/tag-tokyo.jpg" alt="post cover image")
-                                    .image-cover
-                                .card-body
-                                    .d-flex.align-items-center
-                                        i.fa.fa-tag.mr-3
-                                        span
-                                            a(href="tag.html") Tokyo
-                                            a(href="tag.html") Culture
-                                            a(href="tag.html") Temple
-                                    h4.my-2
-                                        a(href="post.html") Zojoji Temple
-                                    div 2016 March 14
-                                    p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
-                                        | Zojoji Temple (増上寺, Zōjōji) is the head temple of the Jodo sect of Japanese
-                                        | Buddhism in the Kanto Region. Standing next to Tokyo Tower, the temple grounds
-                                        | consist of some impressive structures as well as a mausoleum of the Tokugawa
-                                        | family and a small museum.
+                        each post in relatedPosts
+                            .col-sm-6.mt-4
+                                .card
+                                    .image-container.card-img-top
+                                        img(src=(post.image!=undefined?image_path+post.image.name:image_path+'default-post.jpg') alt="post cover image")
+                                        .image-cover
+                                    .card-body
+                                        .d-flex.align-items-center
+                                            i.fa.fa-tag.mr-3
+                                            span
+                                                each tag in post.tags
+                                                    a(href=`/tag/${tag.slug}`)=tag.name
+                                                    |&nbsp;
+                                        h4.my-2.overflow-hidden
+                                            a.text-nowrap(href=`/post/${post.slug}`)=post.title
+                                        div=post.publishedTime
+                                        p.overflow-hidden.text-justify.mt-3(style="height: 4.5rem;")
+                                            |!{post.description}
                 section.mt-5
                     if(comments.length>0)
                         h2=comments.length

@@ -73,7 +73,7 @@ exports.tag = [
             //get posts
             const posts = await Post
                 .find({ status: 'published', 'tags': tag._id })
-                .sort({ views: 'desc' })
+                .sort({ createdAt: 'desc' })
                 .limit(6)
                 .populate('image')
                 .populate('tags')
