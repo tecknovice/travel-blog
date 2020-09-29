@@ -95,7 +95,7 @@ exports.post = [
             //get related posts
             const activeTagIds =  post.tags.map(tag => tag._id)
             const allPosts = await Post
-                .find({ _id: { $ne: post._id } })
+                .find({ status: 'published', _id: { $ne: post._id } })
                 .sort({ createdAt: 'desc' })
                 .exec();
             const postsMap = new Map()
